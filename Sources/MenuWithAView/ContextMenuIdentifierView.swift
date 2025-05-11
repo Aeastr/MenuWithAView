@@ -41,6 +41,25 @@ class ContextMenuIdentifierUIView: UIView {
     }
 }
 
+
 #Preview {
     MenuWithAView_Example()
+}
+
+struct ContextMenuGenericIdentifierView<Content: View>: UIViewRepresentable {
+    let accessoryView: () -> Content
+    
+    init(accessoryView: @escaping () -> Content) {
+        self.accessoryView = accessoryView
+    }
+    
+    func makeUIView(context: Context) -> UIView {
+        let rootView = accessoryView()
+        let hostingView = _UIHostingView(rootView: rootView)
+        let defaultConfig = ContextMenuAccessoryConfiguration()
+        let identifierView = ContextMenuIdentifierUIView(accessoryView: hostingView, configuration: defaultConfig)
+        return identifierView
+    }
+    
+    func updateUIView(_ uiView: UIView, context: Context) {}
 }
