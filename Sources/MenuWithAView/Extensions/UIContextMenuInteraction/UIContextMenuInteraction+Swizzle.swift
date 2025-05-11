@@ -33,19 +33,28 @@ extension UIContextMenuInteraction {
     }
     
     @objc dynamic func swizzled_delegate_getAccessoryViewsForConfiguration(_ configuration: UIContextMenuConfiguration) -> [UIView] {
-        if let identifierView = view?.firstSubview(ofType: ContextMenuIdentifierUIView.self) {
-            
-            let contentView = identifierView.accessoryView
-            contentView.frame.size = contentView.intrinsicContentSize
-            
-            let accessoryView = UIContextMenuInteraction.accessoryView(configuration: identifierView.configuration)
-            accessoryView?.frame.size = contentView.intrinsicContentSize
-            accessoryView?.addSubview(contentView)
-            
-            return [accessoryView].compact()
-        } else {
+        // Collect all ContextMenuIdentifierUIView instances in the hierarchy
+        guard let idViews = view?.allSubviews(ofType: ContextMenuIdentifierUIView.self), !idViews.isEmpty else {
+            // No custom accessories, fallback to original implementation
             return swizzled_delegate_getAccessoryViewsForConfiguration(configuration)
         }
+        // Sort by placement to ensure correct position ordering
+        let allIDs = idViews.sorted { lhs, rhs in
+            lhs.configuration.placement.rawValue < rhs.configuration.placement.rawValue
+        }
+
+        // Create an accessory UIView for each identifier view based on its configuration
+        let accessoryViews = allIDs.compactMap { identifierView -> UIView? in
+            let contentView = identifierView.accessoryView
+            contentView.frame.size = contentView.intrinsicContentSize
+
+            guard let accessoryWrapper = UIContextMenuInteraction.accessoryView(configuration: identifierView.configuration) else {
+                return nil
+            }
+            accessoryWrapper.frame.size = contentView.intrinsicContentSize
+            accessoryWrapper.addSubview(contentView)
+            return accessoryWrapper
+        }
+        return accessoryViews
     }
 }
-

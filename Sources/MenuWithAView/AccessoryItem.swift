@@ -34,6 +34,28 @@ extension AccessoryItem {
     typealias Configuration = ContextMenuAccessoryConfiguration
 }
 
+/// Builder that aggregates AccessoryItem and raw Views into accessory items
+@resultBuilder
+public struct AccessoryContentBuilder {
+    public static func buildBlock(_ items: [AccessoryItem<AnyView>]...) -> [AccessoryItem<AnyView>] {
+        items.flatMap { $0 }
+    }
+
+    @MainActor public static func buildExpression<Content: View>(_ item: AccessoryItem<Content>) -> [AccessoryItem<AnyView>] {
+        // Preserve placement by wrapping in AnyView
+        [AccessoryItem<AnyView>(placement: item.configuration.placement) {
+            AnyView(item)
+        }]
+    }
+
+    @MainActor public static func buildExpression<Content: View>(_ view: Content) -> [AccessoryItem<AnyView>] {
+        // Default placement .center for raw views
+        [AccessoryItem<AnyView>(placement: .center) {
+            AnyView(view)
+        }]
+    }
+}
+
 public enum ContextMenuAccessoryLocation: Int {
     case background = 0
     case preview = 1

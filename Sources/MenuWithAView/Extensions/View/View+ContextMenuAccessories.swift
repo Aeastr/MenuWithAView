@@ -9,26 +9,15 @@ import SwiftUI
 import UIKit
 
 public extension View {
-    func contextMenu<MenuItems, Content>(@ViewBuilder menuItems: () -> MenuItems, @ViewBuilder accessoryContent: @escaping () -> AccessoryItem<Content>) -> some View where MenuItems : View, Content : View {
-        background {
-            ContextMenuIdentifierView(accessoryView: accessoryContent)
-                .accessibilityHidden(true)
-        }
-        .contextMenu(menuItems: menuItems)
-    }
-
-    /// Accept a generic SwiftUI View as accessory content
-    func contextMenu<MenuItems, AccessoryView: View>(
+    /// Context menu with one or more AccessoryItem entries or raw Views
+    func contextMenu<MenuItems>(
         @ViewBuilder menuItems: () -> MenuItems,
-        @ViewBuilder accessoryContent: @escaping () -> AccessoryView
+        @AccessoryContentBuilder accessoryContent: @escaping () -> [AccessoryItem<AnyView>]
     ) -> some View where MenuItems: View {
         background {
-            ContextMenuGenericIdentifierView(accessoryView: accessoryContent)
+            ContextMenuIdentifierView<AnyView>(accessoryViews: accessoryContent)
                 .accessibilityHidden(true)
         }
         .contextMenu(menuItems: menuItems)
     }
-}
-#Preview {
-    MenuWithAView_Example()
 }

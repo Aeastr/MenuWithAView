@@ -9,8 +9,6 @@ import SwiftUI
 
 public struct MenuWithAView_Example: View {
     
-    @State var placement: ContextMenuAccessoryPlacement = .bottom
-    
     public init(){}
     
     public var body: some View {
@@ -27,29 +25,15 @@ public struct MenuWithAView_Example: View {
                             Label("Button", systemImage: "circle")
                         }
                     } accessoryContent: {
-                        AccessoryItem(placement: placement) {
-                            Text("Accessory View")
+                        AccessoryItem(placement: .bottom) {
+                            Text("Bottom")
+                        }
+                        AccessoryItem(placement: .top) {
+                            Text("Top")
                         }
                     }
                     .frame(maxHeight: .infinity, alignment: .top)
                 
-                Divider()
-                
-                VStack{
-                    switch placement{
-                    case .top:
-                        Text("Top")
-                    case .bottom:
-                        Text("Bottom")
-                    case .center:
-                        Text("Center")
-                    case .leading:
-                        Text("Leading")
-                    case .trailing:
-                        Text("Trailing")
-                    }
-                }
-                .frame(maxHeight: .infinity)
             }
         }
     }

@@ -10,17 +10,26 @@ import SwiftUI
 import ContextMenuAccessoryStructs
 
 struct ContextMenuIdentifierView<Content: View>: UIViewRepresentable {
-    let accessoryView: () -> AccessoryItem<Content>
+    // Builder for multiple AccessoryItem
+    let accessoryViews: () -> [AccessoryItem<Content>]
     
-    func makeUIView(context: Context) -> some UIView {
-        let rootView = accessoryView()
-        let hostingView = _UIHostingView(rootView: rootView)
-        let identifierView = ContextMenuIdentifierUIView(accessoryView: hostingView, configuration: rootView.configuration)
-        
-        return identifierView
+    func makeUIView(context: Context) -> UIView {
+        let container = UIView()
+        // Create an identifier view for each accessory item
+        accessoryViews().forEach { item in
+            // Force items into menu location for positioning within context menu
+            var config = item.configuration
+//            config.location = .menu
+            let hostingView = _UIHostingView(rootView: item)
+            let identifierView = ContextMenuIdentifierUIView(accessoryView: hostingView, configuration: config)
+            container.addSubview(identifierView)
+        }
+        return container
     }
     
-    func updateUIView(_ uiView: UIViewType, context: Context) {}
+    func updateUIView(_ uiView: UIView, context: Context) {
+        // no-op
+    }
 }
 
 class ContextMenuIdentifierUIView: UIView {
@@ -41,11 +50,7 @@ class ContextMenuIdentifierUIView: UIView {
     }
 }
 
-
-#Preview {
-    MenuWithAView_Example()
-}
-
+// MARK: - Generic Accessory View
 struct ContextMenuGenericIdentifierView<Content: View>: UIViewRepresentable {
     let accessoryView: () -> Content
     
