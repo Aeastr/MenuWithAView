@@ -16,4 +16,16 @@ public extension View {
         }
         .contextMenu(menuItems: menuItems)
     }
+
+    /// Accept a generic SwiftUI View as accessory content
+    func contextMenu<MenuItems, AccessoryView: View>(
+        @ViewBuilder menuItems: () -> MenuItems,
+        @ViewBuilder accessoryContent: @escaping () -> AccessoryView
+    ) -> some View where MenuItems: View {
+        background {
+            ContextMenuGenericIdentifierView(accessoryView: accessoryContent)
+                .accessibilityHidden(true)
+        }
+        .contextMenu(menuItems: menuItems)
+    }
 }
