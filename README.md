@@ -27,9 +27,52 @@
 
 ---
 
-## Features
+Of course! Here’s a clear, concise README section for `contextMenuAccessory`, including a parameter list, example, and a note about DocC documentation:
 
-- **DocC Documentation**
+---
+
+## contextMenuAccessory
+
+`contextMenuAccessory` is a SwiftUI modifier that lets you attach a accessory view to a `.contextMenu`. You can control the accessory’s placement, location, alignment, and tracking axis.
+
+**DocC documentation is available for this modifier.**
+
+### Parameters
+
+- `placement`: Where the accessory is attached relative to the context menu.  
+  *(Default: `.center`)*
+- `location`: The location where the accessory appears.  
+  *(Default: `.preview`)*
+- `alignment`: How the accessory aligns within its container.  
+  *(Default: `.leading`)*
+- `trackingAxis`: The axis along which the accessory tracks user interaction.  
+  *(Default: `[.xAxis, .yAxis]`)*
+- `accessory`: The view to display as the accessory.
+
+### Example
+
+```swift
+Text("Turtle Rock")
+    .padding()
+    .contextMenu {
+        Button(action: {}) {
+            Label("Button", systemImage: "circle")
+        }
+    }
+    .contextMenuAccessory(
+        placement: .center,
+        location: .preview,
+        alignment: .leading,
+        trackingAxis: .yAxis
+    ) {
+        Text("Accessory View")
+            .font(.title2)
+            .padding(8)
+            .background(Color.blue.opacity(0.6))
+            .clipShape(RoundedRectangle(cornerRadius: 12))
+            .padding(16)
+    }
+```
 
 ---
 
