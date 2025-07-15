@@ -71,8 +71,8 @@ public struct MenuWithAView_Example: View {
                             )
                         )
                         .frame(width: 200, height: 120)
-                        .shadow(color: Color(red: 0.15, green: 0.45, blue: 0.85).opacity(0.25), radius: 10, y: 1)
-                        .contentShape([.contextMenuPreview, .interaction], RoundedRectangle(cornerRadius: 16))
+//                        .shadow(color: Color(red: 0.15, green: 0.45, blue: 0.85).opacity(0.25), radius: 10, y: 1)
+//                        .contentShape([.contextMenuPreview, .interaction], RoundedRectangle(cornerRadius: 16))
                         .contextMenu {
                             Button { } label: { Label("Button", systemImage: "circle") }
                         }
@@ -85,7 +85,7 @@ public struct MenuWithAView_Example: View {
                             Text("Accessory View")
                                 .font(.title2)
                                 .padding(8)
-                                .background(Color.blue.opacity(0.6))
+                                .background(Color.blue.opacity(1.0))
                                 .clipShape(RoundedRectangle(cornerRadius: 12))
                                 .padding(16)
                         }
