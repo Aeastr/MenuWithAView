@@ -104,10 +104,10 @@
         }
       ],
       "position" : {
-        "scale" : 0.9,
+        "scale" : 0.95,
         "translation-in-points" : [
-          15.7421875,
-          -25.5546875
+          4.6796875,
+          4.8125
         ]
       },
       "shadow" : {
