@@ -1,6 +1,9 @@
 {
   "fill" : {
-    "automatic-gradient" : "display-p3:0.25879,0.48242,0.81982,1.00000"
+    "linear-gradient" : [
+      "display-p3:0.30258,0.72559,1.00000,1.00000",
+      "display-p3:0.25879,0.48242,0.81982,1.00000"
+    ]
   },
   "groups" : [
     {
@@ -13,6 +16,32 @@
             "translation-in-points" : [
               -292.7421875,
               202.0859375
+            ]
+          }
+        },
+        {
+          "glass" : false,
+          "image-name" : "sender2.svg",
+          "name" : "sender2",
+          "opacity" : 0.44,
+          "position" : {
+            "scale" : 1,
+            "translation-in-points" : [
+              163.625,
+              554
+            ]
+          }
+        },
+        {
+          "glass" : false,
+          "image-name" : "sender1.svg",
+          "name" : "sender1",
+          "opacity" : 0.44,
+          "position" : {
+            "scale" : 1,
+            "translation-in-points" : [
+              229.0546875,
+              -546.5703125
             ]
           }
         },
@@ -33,8 +62,8 @@
       "position" : {
         "scale" : 0.9,
         "translation-in-points" : [
-          16.46875,
-          2.4921875
+          0,
+          0
         ]
       },
       "shadow" : {
