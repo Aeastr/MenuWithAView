@@ -1,5 +1,5 @@
 <div align="center">
-  <img width="300" height="300" src="/assets/icon.png" alt="MenuWithAView Logo">
+  <img width="270" height="270" src="/assets/icon.png" alt="MenuWithAView Logo">
   <h1><b>MenuWithAView</b></h1>
   <p>
     MenuWithAView is a SwiftUI package that lets you add accessory views to your context menu interactions, with UIKit's private _UIContextMenuAccessoryView.
