@@ -10,20 +10,26 @@ import ContextMenuAccessoryStructs
 
 struct AccessoryItem<Content: View>: View {
     let configuration: Configuration
-    let content: () -> Content
+    let content: Content
 
-    init(configuration: ContextMenuAccessoryConfiguration, content: @escaping () -> Content) {
+    init(
+        configuration: ContextMenuAccessoryConfiguration,
+        @ViewBuilder content: () -> Content
+    ) {
         self.configuration = configuration
-        self.content = content
+        self.content = content()
     }
     
-    init(placement: Placement, content: @escaping () -> Content) {
+    init(
+        placement: Placement,
+        @ViewBuilder content: () -> Content
+    ) {
         self.configuration = Configuration(placement: placement)
-        self.content = content
+        self.content = content()
     }
     
     var body: some View {
-        content()
+        content
     }
 }
 
@@ -78,9 +84,7 @@ public struct ContextMenuAccessoryTrackingAxis: OptionSet, Sendable {
 }
 
 /// Configuration for context menu accessories, including placement, location, alignment, and tracking axis.
-struct ContextMenuAccessoryConfiguration: Identifiable {
-    let id: UUID = UUID()
-    
+struct ContextMenuAccessoryConfiguration {
     var location: ContextMenuAccessoryLocation = .preview
     
     // controls the attachment point

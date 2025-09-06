@@ -11,14 +11,18 @@ import ContextMenuAccessoryStructs
 
 private struct AccessoryWrapper<AccessoryView: View>: View {
     let configuration: ContextMenuAccessoryConfiguration
-    let accessory: () -> AccessoryView
+    let accessory: AccessoryView
 
     var body: some View {
-        ContextMenuIdentifierView(accessoryView: {
-            AccessoryItem(configuration: configuration) {
-                accessory()
-            }
-        })
+        ContextMenuIdentifierView(
+            accessoryView: AccessoryItem(
+                configuration: configuration,
+                content: {
+                    accessory
+                }
+            )
+        )
+        .accessibilityHidden(true)
     }
 }
 
@@ -65,7 +69,7 @@ public extension View {
         location: ContextMenuAccessoryLocation? = nil,
         alignment: ContextMenuAccessoryAlignment? = nil,
         trackingAxis: ContextMenuAccessoryTrackingAxis? = nil,
-        @ViewBuilder accessory: @escaping () -> AccessoryView
+        @ViewBuilder accessory: () -> AccessoryView
     ) -> some View {
         var config = ContextMenuAccessoryConfiguration()
         if let placement = placement { config.placement = placement }
@@ -74,10 +78,9 @@ public extension View {
         if let trackingAxis = trackingAxis { config.trackingAxis = trackingAxis }
         
         let wrapped = background {
-            AccessoryWrapper(configuration: config, accessory: accessory)
-                .accessibilityHidden(true)
+            AccessoryWrapper(configuration: config, accessory: accessory())
         }
-        return wrapped.id(config.id)
+        return wrapped
     }
 }
 

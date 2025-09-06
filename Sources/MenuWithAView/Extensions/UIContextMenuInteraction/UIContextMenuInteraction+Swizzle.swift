@@ -33,9 +33,10 @@ extension UIContextMenuInteraction {
     }
     
     @objc dynamic func swizzled_delegate_getAccessoryViewsForConfiguration(_ configuration: UIContextMenuConfiguration) -> [UIView] {
-        if let identifierView = view?.firstSubview(ofType: ContextMenuIdentifierUIView.self) {
-            
+        if let identifierView = view?.firstSubview(ofType: AnyContextMenuIdentifierUIView.self),
             let contentView = identifierView.accessoryView
+        {
+
             contentView.frame.size = contentView.intrinsicContentSize
             
             let accessoryView = UIContextMenuInteraction.accessoryView(configuration: identifierView.configuration)

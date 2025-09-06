@@ -10,29 +10,42 @@ import SwiftUI
 import ContextMenuAccessoryStructs
 
 struct ContextMenuIdentifierView<Content: View>: UIViewRepresentable {
-    let accessoryView: () -> AccessoryItem<Content>
+    let accessoryView: AccessoryItem<Content>
     
-    func makeUIView(context: Context) -> some UIView {
-        let rootView = accessoryView()
-        let hostingView = _UIHostingView(rootView: rootView)
-        let identifierView = ContextMenuIdentifierUIView(accessoryView: hostingView, configuration: rootView.configuration)
-        
-        return identifierView
+    func makeUIView(context: Context) -> ContextMenuIdentifierUIView<Content> {
+        let uiView = ContextMenuIdentifierUIView(
+            accessoryView: accessoryView
+        )
+        return uiView
     }
     
-    func updateUIView(_ uiView: UIViewType, context: Context) {}
+    func updateUIView(_ uiView: ContextMenuIdentifierUIView<Content>, context: Context) {
+        uiView.hostingView.rootView = accessoryView.content
+    }
 }
 
-class ContextMenuIdentifierUIView: UIView {
-    let accessoryView: UIView
-    let configuration: ContextMenuAccessoryConfiguration
-    
-    init(accessoryView: UIView, configuration: ContextMenuAccessoryConfiguration) {
+class AnyContextMenuIdentifierUIView: UIView {
+    var accessoryView: UIView?
+    var configuration: ContextMenuAccessoryConfiguration
+
+    init(accessoryView: UIView? = nil, configuration: ContextMenuAccessoryConfiguration) {
         self.accessoryView = accessoryView
         self.configuration = configuration
-        
         super.init(frame: .zero)
-        
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+}
+
+class ContextMenuIdentifierUIView<Content: View>: AnyContextMenuIdentifierUIView {
+    let hostingView: _UIHostingView<Content>
+
+    init(accessoryView: AccessoryItem<Content>) {
+        self.hostingView = _UIHostingView(rootView: accessoryView.content)
+        super.init(accessoryView: hostingView, configuration: accessoryView.configuration)
+
         UIContextMenuInteraction.swizzle_delegate_getAccessoryViewsForConfigurationIfNeeded()
     }
     
