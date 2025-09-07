@@ -1,6 +1,0 @@
-framework module ContextMenuAccessoryStructs {
-  umbrella header "ContextMenuAccessoryStructs.h"
-  export *
-
-  module * { export * }
-}
