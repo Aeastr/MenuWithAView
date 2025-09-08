@@ -36,7 +36,7 @@ extension UIContextMenuInteraction {
         if let identifierView = view?.firstSubview(ofType: AnyContextMenuIdentifierUIView.self),
             let contentView = identifierView.accessoryView
         {
-
+            identifierView.interaction = view?.interactions.compactMap({ $0 as? UIContextMenuInteraction }).first
             contentView.frame.size = contentView.intrinsicContentSize
             
             let accessoryView = UIContextMenuInteraction.accessoryView(configuration: identifierView.configuration)

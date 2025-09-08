@@ -8,43 +8,6 @@
 import SwiftUI
 import ContextMenuAccessoryStructs
 
-struct AccessoryItem<Content: View>: View {
-    let configuration: Configuration
-    let content: Content
-
-    init(
-        configuration: ContextMenuAccessoryConfiguration,
-        @ViewBuilder content: () -> Content
-    ) {
-        self.configuration = configuration
-        self.content = content()
-    }
-    
-    init(
-        placement: Placement,
-        @ViewBuilder content: () -> Content
-    ) {
-        self.configuration = Configuration(placement: placement)
-        self.content = content()
-    }
-    
-    var body: some View {
-        content
-    }
-}
-
-extension AccessoryItem {
-    public typealias Location = ContextMenuAccessoryLocation
-    
-    public typealias Placement = ContextMenuAccessoryPlacement
-    
-    public typealias Alignment = ContextMenuAccessoryAlignment
-    
-    public typealias TrackingAxis = ContextMenuAccessoryTrackingAxis
-    
-    typealias Configuration = ContextMenuAccessoryConfiguration
-}
-
 public enum ContextMenuAccessoryLocation: Int {
     case background = 0
     case preview = 1
@@ -80,6 +43,16 @@ public struct ContextMenuAccessoryTrackingAxis: OptionSet, Sendable {
     
     public static var yAxis: ContextMenuAccessoryTrackingAxis {
         return ContextMenuAccessoryTrackingAxis(rawValue: 1 << 1)
+    }
+}
+
+public struct ContextMenuProxy: @unchecked Sendable {
+
+    var dismissBlock: (() -> Void)?
+
+    @MainActor
+    public func dismiss() {
+        dismissBlock?()
     }
 }
 

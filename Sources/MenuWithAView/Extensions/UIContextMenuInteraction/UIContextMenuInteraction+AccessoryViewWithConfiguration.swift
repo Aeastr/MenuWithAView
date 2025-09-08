@@ -10,7 +10,7 @@ import SwiftUI
 import ContextMenuAccessoryStructs
 
 extension UIContextMenuInteraction {
-    static func accessoryView(configuration: AccessoryItem.Configuration) -> UIView? {
+    static func accessoryView(configuration: ContextMenuAccessoryConfiguration) -> UIView? {
         let accessoryViewClassString = ["View", "Accessory", "Menu", "Context", "UI", "_"].reversed().joined()
         let accessoryViewClass = NSClassFromString(accessoryViewClassString) as? UIView.Type
         
