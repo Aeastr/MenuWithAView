@@ -4,7 +4,7 @@
   <p>
     MenuWithAView is a SwiftUI package that lets you add accessory views to your context menu interactions, with UIKit's private _UIContextMenuAccessoryView.
     <br>
-    <i>Compatible with iOS 18 and later</i>
+    <i>Compatible with iOS 16 and later</i>
   </p>
 </div>
 
