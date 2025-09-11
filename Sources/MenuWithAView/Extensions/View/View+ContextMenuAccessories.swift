@@ -9,19 +9,6 @@ import SwiftUI
 import UIKit
 import ContextMenuAccessoryStructs
 
-private struct AccessoryWrapper<AccessoryView: View>: View {
-    let configuration: ContextMenuAccessoryConfiguration
-    let accessory: (ContextMenuProxy) -> AccessoryView
-
-    var body: some View {
-        ContextMenuIdentifierView(
-            configuration: configuration,
-            accessory: accessory
-        )
-        .accessibilityHidden(true)
-    }
-}
-
 public extension View {
     /// Adds an accessory view to instances of `.contextMenu`.
     ///
@@ -75,7 +62,10 @@ public extension View {
 
         let accessory = accessory()
         let wrapped = background {
-            AccessoryWrapper(configuration: config, accessory: { _ in accessory })
+            ContextMenuIdentifierView(
+                configuration: config,
+                accessory: { _ in accessory }
+            )
         }
         return wrapped
     }
@@ -89,7 +79,7 @@ public extension View {
     ///   - location: The location where the accessory should appear. *(Optional, default: `.preview`)*
     ///   - alignment: The alignment of the accessory within its container. *(Optional, default: `.leading`)*
     ///   - trackingAxis: The axis along which the accessory tracks user interaction. *(Optional, default: `[.xAxis, .yAxis]`)*
-    ///   - accessory: A view builder that creates the accessory view.
+    ///   - accessory: A view builder that creates the accessory view using a proxy to the `.contextMenu` interaction that allows dismissal of the view to be triggered.
     ///
     /// For more details on default values, see ``ContextMenuAccessoryConfiguration``.
     ///
@@ -131,7 +121,10 @@ public extension View {
         if let trackingAxis = trackingAxis { config.trackingAxis = trackingAxis }
 
         let wrapped = background {
-            AccessoryWrapper(configuration: config, accessory: accessory)
+            ContextMenuIdentifierView(
+                configuration: config,
+                accessory: accessory
+            )
         }
         return wrapped
     }

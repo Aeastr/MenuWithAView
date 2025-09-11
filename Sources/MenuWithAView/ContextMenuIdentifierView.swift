@@ -9,7 +9,23 @@ import UIKit
 import SwiftUI
 import ContextMenuAccessoryStructs
 
-struct ContextMenuIdentifierView<AccessoryView: View>: UIViewRepresentable {
+struct ContextMenuIdentifierView<AccessoryView: View>: View {
+    let configuration: ContextMenuAccessoryConfiguration
+    let accessory: (ContextMenuProxy) -> AccessoryView
+
+    var body: some View {
+        ContextMenuIdentifierViewBody(
+            configuration: configuration,
+            accessory: accessory
+        )
+        // Disable accessibility so any accessibility modifiers used are
+        // not applied to `ContextMenuIdentifierViewBody`
+        .environment(\.accessibilityEnabled, false)
+    }
+}
+
+
+struct ContextMenuIdentifierViewBody<AccessoryView: View>: UIViewRepresentable {
     let configuration: ContextMenuAccessoryConfiguration
     let accessory: (ContextMenuProxy) -> AccessoryView
 
