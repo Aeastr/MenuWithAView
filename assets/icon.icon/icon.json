@@ -7,6 +7,7 @@
   },
   "groups" : [
     {
+      "blur-material" : 0.5,
       "layers" : [
         {
           "image-name" : "shhh.png",
@@ -16,32 +17,6 @@
             "translation-in-points" : [
               -292.7421875,
               202.0859375
-            ]
-          }
-        },
-        {
-          "glass" : false,
-          "image-name" : "sender2.svg",
-          "name" : "sender2",
-          "opacity" : 0.44,
-          "position" : {
-            "scale" : 1,
-            "translation-in-points" : [
-              163.625,
-              554
-            ]
-          }
-        },
-        {
-          "glass" : false,
-          "image-name" : "sender1.svg",
-          "name" : "sender1",
-          "opacity" : 0.44,
-          "position" : {
-            "scale" : 1,
-            "translation-in-points" : [
-              229.0546875,
-              -546.5703125
             ]
           }
         },
@@ -77,7 +52,56 @@
       }
     },
     {
-      "blur-material" : null,
+      "blur-material" : 0.5,
+      "layers" : [
+        {
+          "glass" : true,
+          "image-name" : "sender2.svg",
+          "name" : "sender2",
+          "opacity" : 0.44,
+          "position" : {
+            "scale" : 1,
+            "translation-in-points" : [
+              163.625,
+              554
+            ]
+          }
+        },
+        {
+          "glass" : true,
+          "image-name" : "sender1.svg",
+          "name" : "sender1",
+          "opacity" : 0.44,
+          "position" : {
+            "scale" : 1,
+            "translation-in-points" : [
+              229.0546875,
+              -546.5703125
+            ]
+          }
+        }
+      ],
+      "lighting" : "combined",
+      "name" : "Group",
+      "position" : {
+        "scale" : 0.9,
+        "translation-in-points" : [
+          0,
+          0
+        ]
+      },
+      "shadow" : {
+        "kind" : "neutral",
+        "opacity" : 0.5
+      },
+      "specular" : false,
+      "translucency" : {
+        "enabled" : false,
+        "value" : 0.5
+      }
+    },
+    {
+      "blur-material" : 0.5,
       "layers" : [
         {
           "glass" : false,
@@ -116,6 +140,36 @@
       },
       "translucency" : {
         "enabled" : true,
+        "value" : 0.5
+      }
+    },
+    {
+      "blur-material" : null,
+      "hidden" : false,
+      "layers" : [
+        {
+          "fill" : {
+            "solid" : "extended-gray:1.00000,1.00000"
+          },
+          "image-name" : "grid.png",
+          "name" : "Grid",
+          "opacity" : 0.4,
+          "position" : {
+            "scale" : 0.5,
+            "translation-in-points" : [
+              0,
+              0
+            ]
+          }
+        }
+      ],
+      "shadow" : {
+        "kind" : "none",
+        "opacity" : 0.5
+      },
+      "specular" : false,
+      "translucency" : {
+        "enabled" : false,
         "value" : 0.5
       }
     }
