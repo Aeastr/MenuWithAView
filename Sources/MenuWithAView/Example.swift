@@ -80,7 +80,7 @@ public struct MenuWithAView_Example: View {
                             placement: placement,
                             location: location,
                             alignment: alignment,
-                            trackingAxis: .yAxis
+                            trackingAxis: .xAxis
                         ) {
                             Text("Accessory View")
                                 .font(.title2)
