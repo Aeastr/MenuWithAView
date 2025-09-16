@@ -43,7 +43,9 @@
   *(Default: `.leading`)*
 - `trackingAxis`: The axis along which the accessory tracks user interaction.
   *(Default: `[.xAxis, .yAxis]`)*
-- `accessory`: A view builder that receives a `ContextMenuProxy` and returns the accessory view.
+- `accessory`: A view builder that returns the accessory view. Available in two variants:
+  - Simple: `@ViewBuilder accessory: () -> AccessoryView`
+  - With proxy: `@ViewBuilder accessory: (ContextMenuProxy) -> AccessoryView`
 
 ### Examples
 
