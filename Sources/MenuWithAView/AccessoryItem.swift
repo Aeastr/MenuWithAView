@@ -30,7 +30,7 @@ public enum ContextMenuAccessoryAlignment: UInt64 {
     case trailing = 8
 }
 
-public struct ContextMenuAccessoryTrackingAxis: OptionSet, Sendable {
+public struct ContextMenuAccessoryTrackingAxis: OptionSet, Sendable, Hashable {
     public let rawValue: Int
     
     public init(rawValue: Int) {
