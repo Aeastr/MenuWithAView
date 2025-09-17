@@ -4,7 +4,7 @@
   <p>
     MenuWithAView is a SwiftUI package that lets you add accessory views to your context menu interactions, with UIKit's private _UIContextMenuAccessoryView.
     <br>
-    <i>Compatible with iOS 18 and later</i>
+    <i>Compatible with iOS 16 and later</i>
   </p>
 </div>
 
@@ -14,7 +14,7 @@
     <img src="https://img.shields.io/badge/Swift-6.0-orange.svg" alt="Swift Version">
   </a>
   <a href="https://www.apple.com/ios/">
-     <img src="https://img.shields.io/badge/iOS-18%2B-blue.svg" alt="iOS"> 
+     <img src="https://img.shields.io/badge/iOS-16%2B-blue.svg" alt="iOS">
   </a>
   <a href="LICENSE">
     <img src="https://img.shields.io/badge/License-MIT-green.svg" alt="License: MIT">
@@ -29,23 +29,27 @@
 
 ## contextMenuAccessory
 
-`contextMenuAccessory` is a SwiftUI modifier that lets you attach an accessory view to a `.contextMenu`. You can control the accessory’s placement, location, alignment, and tracking axis.
+`contextMenuAccessory` is a SwiftUI modifier that lets you attach an accessory view to a `.contextMenu`. You can control the accessory's placement, location, alignment, and tracking axis. There are two variants: one for simple accessory views and another that provides a `ContextMenuProxy` for programmatic dismissal.
 
 **DocC documentation is available for this modifier.**
 
 ### Parameters
 
-- `placement`: Where the accessory is attached relative to the context menu.  
+- `placement`: Where the accessory is attached relative to the context menu.
   *(Default: `.center`)*
-- `location`: The location where the accessory appears.  
+- `location`: The location where the accessory appears.
   *(Default: `.preview`)*
-- `alignment`: How the accessory aligns within its container.  
+- `alignment`: How the accessory aligns within its container.
   *(Default: `.leading`)*
-- `trackingAxis`: The axis along which the accessory tracks user interaction.  
+- `trackingAxis`: The axis along which the accessory tracks user interaction.
   *(Default: `[.xAxis, .yAxis]`)*
-- `accessory`: The view to display as the accessory.
+- `accessory`: A view builder that returns the accessory view. Available in two variants:
+  - Simple: `@ViewBuilder accessory: () -> AccessoryView`
+  - With proxy: `@ViewBuilder accessory: (ContextMenuProxy) -> AccessoryView`
 
-### Example
+### Examples
+
+#### Basic Usage
 
 ```swift
 Text("Turtle Rock")
@@ -67,6 +71,32 @@ Text("Turtle Rock")
             .background(Color.blue.opacity(0.6))
             .clipShape(RoundedRectangle(cornerRadius: 12))
             .padding(16)
+    }
+```
+
+#### With Programmatic Dismissal
+
+```swift
+Text("Turtle Rock")
+    .padding()
+    .contextMenu {
+        Button(action: {}) {
+            Label("Button", systemImage: "circle")
+        }
+    }
+    .contextMenuAccessory(placement: .center) { proxy in
+        VStack {
+            Text("Accessory View")
+                .font(.title2)
+
+            Button("Dismiss") {
+                proxy.dismiss()
+            }
+            .buttonStyle(.borderedProminent)
+        }
+        .padding()
+        .background(Color.blue.opacity(0.6))
+        .clipShape(RoundedRectangle(cornerRadius: 12))
     }
 ```
 

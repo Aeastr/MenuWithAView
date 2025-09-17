@@ -53,4 +53,4 @@ jobs:
     - name: Build and Test (${{ matrix.config }})
       run: |
         echo "Using simulator destination: ${{ steps.find_simulator.outputs.SIMULATOR_DESTINATION }}"
-        xcodebuild build -scheme MenuWithAView -sdk $(xcrun --sdk iphonesimulator --show-sdk-path) -destination "${{ steps.find_simulator.outputs.SIMULATOR_DESTINATION }}" SWIFT_VERSION=6.0
+        xcodebuild build -scheme MenuWithAView -sdk iphonesimulator -destination "${{ steps.find_simulator.outputs.SIMULATOR_DESTINATION }}" SWIFT_VERSION=6.0

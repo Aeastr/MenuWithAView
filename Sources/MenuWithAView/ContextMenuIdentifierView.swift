@@ -9,35 +9,89 @@ import UIKit
 import SwiftUI
 import ContextMenuAccessoryStructs
 
-struct ContextMenuIdentifierView<Content: View>: UIViewRepresentable {
-    let accessoryView: () -> AccessoryItem<Content>
-    
-    func makeUIView(context: Context) -> some UIView {
-        let rootView = accessoryView()
-        let hostingView = _UIHostingView(rootView: rootView)
-        let identifierView = ContextMenuIdentifierUIView(accessoryView: hostingView, configuration: rootView.configuration)
-        
-        return identifierView
+struct ContextMenuIdentifierView<AccessoryView: View>: View {
+    let configuration: ContextMenuAccessoryConfiguration
+    let accessory: (ContextMenuProxy) -> AccessoryView
+
+    var body: some View {
+        ContextMenuIdentifierViewBody(
+            configuration: configuration,
+            accessory: accessory
+        )
+        // Disable accessibility so any accessibility modifiers used are
+        // not applied to `ContextMenuIdentifierViewBody`
+        .environment(\.accessibilityEnabled, false)
     }
-    
-    func updateUIView(_ uiView: UIViewType, context: Context) {}
 }
 
-class ContextMenuIdentifierUIView: UIView {
-    let accessoryView: UIView
+
+struct ContextMenuIdentifierViewBody<AccessoryView: View>: UIViewRepresentable {
     let configuration: ContextMenuAccessoryConfiguration
+    let accessory: (ContextMenuProxy) -> AccessoryView
+
+    func makeUIView(
+        context: Context
+    ) -> ContextMenuIdentifierUIView<AccessoryView> {
+        let uiView = ContextMenuIdentifierUIView(
+            configuration: configuration,
+            accessory: accessory
+        )
+        return uiView
+    }
     
-    init(accessoryView: UIView, configuration: ContextMenuAccessoryConfiguration) {
-        self.accessoryView = accessoryView
+    func updateUIView(
+        _ uiView: ContextMenuIdentifierUIView<AccessoryView>,
+        context: Context
+    ) {
+        uiView.update(accessory)
+    }
+}
+
+class AnyContextMenuIdentifierUIView: UIView {
+    var accessoryView: UIView?
+    var configuration: ContextMenuAccessoryConfiguration
+    weak var interaction: UIContextMenuInteraction?
+
+    init(configuration: ContextMenuAccessoryConfiguration) {
         self.configuration = configuration
-        
         super.init(frame: .zero)
-        
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+}
+
+class ContextMenuIdentifierUIView<AccessoryView: View>: AnyContextMenuIdentifierUIView {
+    private var hostingView: _UIHostingView<AccessoryView>!
+
+    init(
+        configuration: ContextMenuAccessoryConfiguration,
+        accessory: (ContextMenuProxy) -> AccessoryView
+    ) {
+        super.init(configuration: configuration)
+        self.hostingView = _UIHostingView(rootView: accessory(makeProxy()))
+        accessoryView = hostingView
+
         UIContextMenuInteraction.swizzle_delegate_getAccessoryViewsForConfigurationIfNeeded()
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+
+    func update(_ accessory: (ContextMenuProxy) -> AccessoryView) {
+        hostingView.rootView = accessory(makeProxy())
+    }
+
+    private func makeProxy() -> ContextMenuProxy {
+        ContextMenuProxy { [weak self] in
+            self?.dismiss()
+        }
+    }
+
+    private func dismiss() {
+        interaction?.dismissMenu()
     }
 }
 

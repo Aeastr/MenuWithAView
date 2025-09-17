@@ -10,7 +10,7 @@ Please read and follow the [Code of Conduct](./CODE_OF_CONDUCT.md). We're commit
 
 Before opening a new issue, search existing issues to avoid duplicates. When filing a bug report, please include:
 - MenuWithAView version (e.g. `0.1.2`) and your Swift/Xcode versions  
-- Target platform (iOS 15.0+), device or simulator  
+- Target platform (iOS 16.0+), device or simulator  
 - A concise description of the problem and steps to reproduce  
 - Minimal code snippet or sample project demonstrating the issue  
 - Any relevant console logs or screenshots

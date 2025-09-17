@@ -8,37 +8,6 @@
 import SwiftUI
 import ContextMenuAccessoryStructs
 
-struct AccessoryItem<Content: View>: View {
-    let configuration: Configuration
-    let content: () -> Content
-
-    init(configuration: ContextMenuAccessoryConfiguration, content: @escaping () -> Content) {
-        self.configuration = configuration
-        self.content = content
-    }
-    
-    init(placement: Placement, content: @escaping () -> Content) {
-        self.configuration = Configuration(placement: placement)
-        self.content = content
-    }
-    
-    var body: some View {
-        content()
-    }
-}
-
-extension AccessoryItem {
-    public typealias Location = ContextMenuAccessoryLocation
-    
-    public typealias Placement = ContextMenuAccessoryPlacement
-    
-    public typealias Alignment = ContextMenuAccessoryAlignment
-    
-    public typealias TrackingAxis = ContextMenuAccessoryTrackingAxis
-    
-    typealias Configuration = ContextMenuAccessoryConfiguration
-}
-
 public enum ContextMenuAccessoryLocation: Int {
     case background = 0
     case preview = 1
@@ -61,7 +30,7 @@ public enum ContextMenuAccessoryAlignment: UInt64 {
     case trailing = 8
 }
 
-public struct ContextMenuAccessoryTrackingAxis: OptionSet, Sendable {
+public struct ContextMenuAccessoryTrackingAxis: OptionSet, Sendable, Hashable {
     public let rawValue: Int
     
     public init(rawValue: Int) {
@@ -77,10 +46,18 @@ public struct ContextMenuAccessoryTrackingAxis: OptionSet, Sendable {
     }
 }
 
+public struct ContextMenuProxy: @unchecked Sendable {
+
+    var dismissBlock: (() -> Void)?
+
+    @MainActor
+    public func dismiss() {
+        dismissBlock?()
+    }
+}
+
 /// Configuration for context menu accessories, including placement, location, alignment, and tracking axis.
-struct ContextMenuAccessoryConfiguration: Identifiable {
-    let id: UUID = UUID()
-    
+struct ContextMenuAccessoryConfiguration {
     var location: ContextMenuAccessoryLocation = .preview
     
     // controls the attachment point

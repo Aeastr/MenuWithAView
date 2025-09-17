@@ -10,7 +10,7 @@ import SwiftUI
 import ContextMenuAccessoryStructs
 
 extension UIContextMenuInteraction {
-    static func accessoryView(configuration: AccessoryItem.Configuration) -> UIView? {
+    static func accessoryView(configuration: ContextMenuAccessoryConfiguration) -> UIView? {
         let accessoryViewClassString = ["View", "Accessory", "Menu", "Context", "UI", "_"].reversed().joined()
         let accessoryViewClass = NSClassFromString(accessoryViewClassString) as? UIView.Type
         
@@ -37,9 +37,11 @@ extension UIContextMenuInteraction {
         let anchorSelector = NSSelectorFromString(anchorString)
         
         if accessoryView.responds(to: anchorSelector) {
-            let method = class_getInstanceMethod(accessoryViewClass, anchorSelector)!
+            guard let method = class_getInstanceMethod(accessoryViewClass, anchorSelector) else {
+                return accessoryView
+            }
             let implementation = method_getImplementation(method)
-            
+
             let type = (@convention(c) (AnyObject, Selector, ContextMenuAccessoryAnchor) -> Void).self
             let setAnchor = unsafeBitCast(implementation, to: type)
             setAnchor(accessoryView, anchorSelector, configuration.anchor)

@@ -6,7 +6,7 @@ import PackageDescription
 let package = Package(
     name: "MenuWithAView",
     platforms: [
-        .iOS(.v18)
+        .iOS(.v16)
     ],
     products: [
         // Products define the executables and libraries a package produces, making them visible to other packages.
@@ -14,6 +14,10 @@ let package = Package(
             name: "MenuWithAView",
             targets: ["MenuWithAView"]
         ),
+        .library(
+            name: "ContextMenuAccessoryStructs",
+            targets: ["ContextMenuAccessoryStructs"]
+        )
     ],
     targets: [
         // Targets are the basic building blocks of a package, defining a module or a test suite.
@@ -22,9 +26,8 @@ let package = Package(
             name: "MenuWithAView",
             dependencies: ["ContextMenuAccessoryStructs"]
         ),
-        .binaryTarget(
-            name: "ContextMenuAccessoryStructs",
-            path: "Frameworks/ContextMenuAccessoryStructs.xcframework"
+        .target(
+            name: "ContextMenuAccessoryStructs"
         )
     ]
 )

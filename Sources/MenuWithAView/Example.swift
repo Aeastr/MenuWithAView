@@ -80,7 +80,7 @@ public struct MenuWithAView_Example: View {
                             placement: placement,
                             location: location,
                             alignment: alignment,
-                            trackingAxis: .yAxis
+                            trackingAxis: .xAxis
                         ) {
                             Text("Accessory View")
                                 .font(.title2)
@@ -170,6 +170,203 @@ public struct MenuWithAView_Example: View {
     }
 }
 
-#Preview {
+// MARK: - Test Views for ContextMenuProxy and Advanced Features
+
+public struct ContextMenuProxyTestView: View {
+    @State private var dismissCount = 0
+    @State private var lastDismissTime = Date()
+
+    public init() {}
+
+    public var body: some View {
+        NavigationStack {
+            VStack(spacing: 30) {
+                Text("Test programmatic dismissal with ContextMenuProxy")
+                    .font(.headline)
+                    .multilineTextAlignment(.center)
+                    .padding()
+
+                VStack(spacing: 20) {
+                    // Basic dismissal test
+                    RoundedRectangle(cornerRadius: 12)
+                        .fill(Color.blue.gradient)
+                        .frame(width: 150, height: 100)
+                        .overlay {
+                            VStack {
+                                Text("Dismissal Test")
+                                    .font(.caption)
+                                    .foregroundColor(.white)
+                                Text("Long press")
+                                    .font(.caption2)
+                                    .foregroundColor(.white.opacity(0.8))
+                            }
+                        }
+                        .contextMenu {
+                            Button("Menu Action") { }
+                        }
+                        .contextMenuAccessory(placement: .center) { proxy in
+                            VStack(spacing: 8) {
+                                Text("Dismissals: \(dismissCount)")
+                                    .font(.caption)
+
+                                Button("Dismiss") {
+                                    dismissCount += 1
+                                    lastDismissTime = Date()
+                                    proxy.dismiss()
+                                }
+                                .buttonStyle(.borderedProminent)
+                            }
+                            .padding()
+                            .background(Color.orange.opacity(0.9))
+                            .clipShape(RoundedRectangle(cornerRadius: 8))
+                        }
+
+                    // Dismissal with action test
+                    RoundedRectangle(cornerRadius: 12)
+                        .fill(Color.green.gradient)
+                        .frame(width: 150, height: 100)
+                        .overlay {
+                            VStack {
+                                Text("Action + Dismiss")
+                                    .font(.caption)
+                                    .foregroundColor(.white)
+                                Text("Long press")
+                                    .font(.caption2)
+                                    .foregroundColor(.white.opacity(0.8))
+                            }
+                        }
+                        .contextMenu {
+                            Button("Menu Action") { }
+                        }
+                        .contextMenuAccessory(placement: .bottom) { proxy in
+                            VStack(spacing: 4) {
+                                Button("Save & Close") {
+                                    // Simulate an action
+                                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                                        proxy.dismiss()
+                                    }
+                                }
+                                .buttonStyle(.bordered)
+                                .font(.caption)
+
+                                Button("Cancel") {
+                                    proxy.dismiss()
+                                }
+                                .buttonStyle(.borderless)
+                                .font(.caption2)
+                            }
+                            .padding(8)
+                            .background(Color.white.opacity(0.95))
+                            .clipShape(RoundedRectangle(cornerRadius: 6))
+                        }
+                }
+
+                Text("Last dismiss: \(lastDismissTime.formatted(date: .omitted, time: .standard))")
+                    .font(.caption)
+                    .foregroundColor(.secondary)
+
+                Spacer()
+            }
+            .padding()
+            .navigationTitle("Proxy Tests")
+            .navigationBarTitleDisplayMode(.inline)
+        }
+    }
+}
+
+public struct ViewUpdatesTestView: View {
+    @State private var counter = 0
+    @State private var color = Color.red
+    @State private var isAnimating = false
+
+    public init() {}
+
+    public var body: some View {
+        NavigationStack {
+            VStack(spacing: 30) {
+                Text("Test real-time view updates in accessory")
+                    .font(.headline)
+                    .multilineTextAlignment(.center)
+                    .padding()
+
+                VStack(spacing: 20) {
+                    Button("Update Counter: \(counter)") {
+                        counter += 1
+                        color = [Color.red, Color.blue, Color.green, Color.orange, Color.purple].randomElement()!
+                    }
+                    .buttonStyle(.borderedProminent)
+
+                    RoundedRectangle(cornerRadius: 12)
+                        .fill(color.gradient)
+                        .frame(width: 200, height: 120)
+                        .scaleEffect(isAnimating ? 1.05 : 1.0)
+                        .animation(.easeInOut(duration: 0.6).repeatForever(autoreverses: true), value: isAnimating)
+                        .overlay {
+                            VStack {
+                                Text("Live Updates")
+                                    .font(.caption)
+                                    .foregroundColor(.white)
+                                Text("Long press")
+                                    .font(.caption2)
+                                    .foregroundColor(.white.opacity(0.8))
+                            }
+                        }
+                        .contextMenu {
+                            Button("Action") { counter += 1 }
+                        }
+                        .contextMenuAccessory(placement: .top) { proxy in
+                            VStack(spacing: 8) {
+                                Text("Counter: \(counter)")
+                                    .font(.title2)
+                                    .foregroundColor(.primary)
+
+                                Circle()
+                                    .fill(color)
+                                    .frame(width: 20, height: 20)
+
+                                HStack {
+                                    Button("+1") {
+                                        counter += 1
+                                    }
+                                    .buttonStyle(.bordered)
+                                    .font(.caption)
+
+                                    Button("Close") {
+                                        proxy.dismiss()
+                                    }
+                                    .buttonStyle(.borderless)
+                                    .font(.caption)
+                                }
+                            }
+                            .padding()
+                            .background(Color(.systemBackground))
+                            .clipShape(RoundedRectangle(cornerRadius: 12))
+                            .shadow(radius: 4)
+                        }
+                }
+
+                Toggle("Animate", isOn: $isAnimating)
+                    .padding(.horizontal, 50)
+
+                Spacer()
+            }
+            .padding()
+            .navigationTitle("Update Tests")
+            .navigationBarTitleDisplayMode(.inline)
+        }
+    }
+}
+
+// MARK: - Preview Collection
+
+#Preview("Main Example") {
     MenuWithAView_Example()
+}
+
+#Preview("Proxy Tests") {
+    ContextMenuProxyTestView()
+}
+
+#Preview("Update Tests") {
+    ViewUpdatesTestView()
 }
