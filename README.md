@@ -21,6 +21,10 @@
   </a>
 </div>
 
+
+> [!WARNING]
+> This package uses a private API (`_UIContextMenuAccessoryView`) which may be unstable, and could change or break in future iOS releases. Use with caution and for experimentation. Anyone using this in App Store releases does so at their own risk.
+
 ## **Demo**
 
 ![Example](/assets/example1.gif)
