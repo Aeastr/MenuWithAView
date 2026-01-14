@@ -1,59 +1,52 @@
 <div align="center">
-  <img width="270" height="270" src="/assets/icon.png" alt="MenuWithAView Logo">
+  <img width="128" height="128" src="/assets/icon.png" alt="MenuWithAView Icon">
   <h1><b>MenuWithAView</b></h1>
   <p>
-    MenuWithAView is a SwiftUI package that lets you add accessory views to your context menu interactions, with UIKit's private _UIContextMenuAccessoryView.
-    <br>
-    <i>Compatible with iOS 16 and later</i>
+    Add accessory views to context menu interactions using UIKit's private _UIContextMenuAccessoryView.
   </p>
 </div>
 
+<p align="center">
+  <a href="https://swift.org"><img src="https://img.shields.io/badge/Swift-6.0+-F05138?logo=swift&logoColor=white" alt="Swift 6.0+"></a>
+  <a href="https://developer.apple.com"><img src="https://img.shields.io/badge/iOS-16+-000000?logo=apple" alt="iOS 16+"></a>
+  <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-green.svg" alt="License: MIT"></a>
+  <img src="https://img.shields.io/badge/Status-Experimental-orange.svg" alt="Experimental">
+</p>
+
+> [!WARNING]
+> This package uses a private API (`_UIContextMenuAccessoryView`) which may be unstable and could change or break in future iOS releases. Use with caution. App Store submissions are at your own risk.
+
 <div align="center">
-  <a href="https://swift.org">
-<!--     <img src="https://img.shields.io/badge/Swift-6.0%20%7C%206-orange.svg" alt="Swift Version"> -->
-    <img src="https://img.shields.io/badge/Swift-6.0-orange.svg" alt="Swift Version">
-  </a>
-  <a href="https://www.apple.com/ios/">
-     <img src="https://img.shields.io/badge/iOS-16%2B-blue.svg" alt="iOS">
-  </a>
-  <a href="LICENSE">
-    <img src="https://img.shields.io/badge/License-MIT-green.svg" alt="License: MIT">
-  </a>
+  <img src="/assets/example1.gif" alt="MenuWithAView demo" width="300">
 </div>
 
 
-> [!WARNING]
-> This package uses a private API (`_UIContextMenuAccessoryView`) which may be unstable, and could change or break in future iOS releases. Use with caution and for experimentation. Anyone using this in App Store releases does so at their own risk.
+## Overview
 
-## **Demo**
+- Attach custom accessory views to any `.contextMenu`
+- Control placement, location, alignment, and tracking axis
+- Programmatic dismissal via `ContextMenuProxy`
+- DocC documentation included
 
-![Example](/assets/example1.gif)
 
----
+## Installation
 
-## contextMenuAccessory
+```swift
+dependencies: [
+    .package(url: "https://github.com/Aeastr/MenuWithAView.git", from: "1.0.0")
+]
+```
 
-`contextMenuAccessory` is a SwiftUI modifier that lets you attach an accessory view to a `.contextMenu`. You can control the accessory's placement, location, alignment, and tracking axis. There are two variants: one for simple accessory views and another that provides a `ContextMenuProxy` for programmatic dismissal.
+```swift
+import MenuWithAView
+```
 
-**DocC documentation is available for this modifier.**
+Or in Xcode: **File > Add Packages…** and enter `https://github.com/Aeastr/MenuWithAView`
 
-### Parameters
 
-- `placement`: Where the accessory is attached relative to the context menu.
-  *(Default: `.center`)*
-- `location`: The location where the accessory appears.
-  *(Default: `.preview`)*
-- `alignment`: How the accessory aligns within its container.
-  *(Default: `.leading`)*
-- `trackingAxis`: The axis along which the accessory tracks user interaction.
-  *(Default: `[.xAxis, .yAxis]`)*
-- `accessory`: A view builder that returns the accessory view. Available in two variants:
-  - Simple: `@ViewBuilder accessory: () -> AccessoryView`
-  - With proxy: `@ViewBuilder accessory: (ContextMenuProxy) -> AccessoryView`
+## Usage
 
-### Examples
-
-#### Basic Usage
+### Basic Usage
 
 ```swift
 Text("Turtle Rock")
@@ -78,7 +71,7 @@ Text("Turtle Rock")
     }
 ```
 
-#### With Programmatic Dismissal
+### With Programmatic Dismissal
 
 ```swift
 Text("Turtle Rock")
@@ -104,38 +97,35 @@ Text("Turtle Rock")
     }
 ```
 
----
 
-## **Acknowledgments**
+## Customization
 
-Special thanks to [@sebjvidal](https://github.com/sebjvidal) for [writing about  _UIContextMenuAccessoryView](https://sebvidal.com/blog/accessorise-your-context-menu-interactions/), and helping with the development of this package!
+### Parameters
 
-## License
+| Parameter | Description | Default |
+|-----------|-------------|---------|
+| `placement` | Where the accessory attaches relative to the context menu | `.center` |
+| `location` | Where the accessory appears | `.preview` |
+| `alignment` | How the accessory aligns within its container | `.leading` |
+| `trackingAxis` | Axis along which the accessory tracks user interaction | `[.xAxis, .yAxis]` |
 
-This project is released under the MIT License. See [LICENSE](LICENSE.md) for details.
+The `accessory` view builder has two variants:
+- Simple: `@ViewBuilder accessory: () -> AccessoryView`
+- With proxy: `@ViewBuilder accessory: (ContextMenuProxy) -> AccessoryView`
+
+
+## How It Works
+
+MenuWithAView wraps UIKit's private `_UIContextMenuAccessoryView` API, discovered and documented by [@sebjvidal](https://sebvidal.com/blog/accessorise-your-context-menu-interactions/).
+
+Since this relies on private APIs, behavior may change between iOS versions. The package is provided for experimentation and learning purposes.
+
 
 ## Contributing
 
-Contributions are welcome! Please feel free to submit a Pull Request. Before you begin, take a moment to review the [Contributing Guide](CONTRIBUTING.md) for details on issue reporting, coding standards, and the PR process.
-
-## Support
-
-If you like this project, please consider giving it a ⭐️
-
----
-
-## Where to find us
-
-|         | Aether | Seb |
-|---------|----------------|------------------|
-| Twitter | [@AetherAurelia](https://x.com/AetherAurelia) |  [@SebJVidal](https://x.com/SebJVidal) |
-| Threads | [@aetheraurelia](https://www.threads.net/@aetheraurelia) | - |
-| Bluesky | [aethers.world](https://bsky.app/profile/aethers.world) | - |
-| LinkedIn| [aether](https://www.linkedin.com/in/willjones24) | - |
-| GitHub  | here, obviously | here!! |
-| Website | - | [sebvidal.com](https://sebvidal.com/) |
+Contributions welcome. See the [Contributing Guide](CONTRIBUTING.md) for details.
 
 
----
+## License
 
-<p align="center">Built with 🍏🕵️🤝👜 by Aether and Seb</p>
+MIT. See [LICENSE](LICENSE.md) for details.
