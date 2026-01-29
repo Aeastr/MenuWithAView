@@ -65,3 +65,6 @@ fastlane/test_output
 .swiftpm/.DS_Store
 .DS_Store
 .DS_Store
+
+# macOS folder icon
+Icon?
